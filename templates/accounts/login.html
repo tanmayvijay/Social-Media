@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+
+{%block title%}
+Welcome User
+{%endblock%}
+
+
+
+{%block content%}
+<h1>Login Slayer</h1>
+
+<form method="post">
+	{{login_form.as_p}}
+	{%csrf_token%}
+	<input class="btn btn-success" type="submit" value="In you go!">
+</form>
+<p><a href="{%url 'accounts:password_reset'%}">Forgot Password?</a></p>
+{%endblock%}

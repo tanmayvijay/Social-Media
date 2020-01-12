@@ -1,0 +1,48 @@
+{%extends 'base.html'%}
+
+
+{%block title%}
+{{user.username}}
+{%endblock%}
+
+
+
+{%block content%}
+
+{%if user.username == request.user.username%}
+<h2>Welcome</h2>
+
+{%endif%}
+
+<h1>{{user.first_name}} {{user.last_name}}</h1>
+
+{%if user.username == request.user.username%}
+
+
+<p>
+	<a class="btn btn-primary" href="{% url 'accounts:edit_profile' user.username %}">Edit Profile</a>
+</p>
+
+
+
+{%else%}
+
+{%if not follow%}
+<p>
+	<a href="{%url 'accounts:follow' user.username %}">Follow</a>
+</p>
+
+{%else%}
+
+<p>
+	<a href="{%url 'accounts:unfollow' user.username %}">Unfollow</a>
+</p>
+
+{%endif%}
+
+{%endif%}
+
+<p>Username: {{user.username}}</p>
+<p>Email: {{user.email}}</p>
+<p>Mob No: {{user.profile.mob_no}}</p>
+{%endblock%}

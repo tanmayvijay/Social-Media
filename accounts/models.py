@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
 	user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
 	mob_no = models.IntegerField()
+	following = models.ManyToManyField("self", related_name='followers', blank=True, symmetrical=False)
 	# topics you like to know abt foriegn key
 	# topics you know fk
 

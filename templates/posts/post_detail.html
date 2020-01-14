@@ -1,0 +1,18 @@
+	{%extends 'base.html'%}
+
+
+{%block title%}
+{{post.title}}
+{%endblock%}
+
+
+
+{%block content%}
+<h1>{{post.title}}</h1>
+by <h2> {{post.author}} </h2> on <h2> {{post.publish}} </h2>
+
+
+<p>
+	{{post.body|linebreaks}}
+</p>
+{%endblock%}

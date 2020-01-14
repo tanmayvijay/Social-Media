@@ -1,5 +1,5 @@
 {%extends 'base.html'%}
-
+{%load posts_tags%}
 
 {%block title%}
 Posts
@@ -22,7 +22,9 @@ Posts
 	<h3> by {{post.author}} on {{post.publish}}</h3>
 </p>
 
-{{post.body|linebreaks|truncatewords:10}}
+<p>Topics: {{post.topics.all|join:", "}}</p>
+
+{{post.body|markdown|truncatewords_html:10}}
 </div>
 
 {%endfor%}

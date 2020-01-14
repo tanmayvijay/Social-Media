@@ -1,4 +1,6 @@
-	{%extends 'base.html'%}
+{%extends 'base.html'%}
+{%load posts_tags%}
+
 
 
 {%block title%}
@@ -13,6 +15,6 @@ by <h2> {{post.author}} </h2> on <h2> {{post.publish}} </h2>
 
 
 <p>
-	{{post.body|linebreaks}}
+	{{post.body|markdown}}
 </p>
 {%endblock%}

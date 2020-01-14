@@ -23,6 +23,11 @@
 	<a class="btn btn-primary" href="{% url 'accounts:edit_profile' user.username %}">Edit Profile</a>
 </p>
 
+<p>
+	<a href="{%url 'posts:draft_posts' %}">
+		<button class="btn btn-primary" >Draft Posts</button>
+	</a>
+</p>
 
 
 {%else%}

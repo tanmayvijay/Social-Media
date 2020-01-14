@@ -1,0 +1,30 @@
+{%extends 'base.html'%}
+{%load posts_tags%}
+
+{%block title%}
+
+{%endblock%}
+
+
+
+{%block content%}
+
+{%for post in posts%}
+
+<div class="jumbotron">
+	<a href="{% url 'posts:edit_post' post.pk post.slug %}"><h2>{{post.title}}</h2></a>
+<p>
+	<h3> by {{post.author}} (You :) ) on {{post.created}}</h3>
+</p>
+
+<p>Topics: {{post.topics.all|join:", "}}</p>
+
+{{post.body|markdown|truncatewords_html:10}}
+</div>
+
+{%endfor%}
+
+
+{%include 'posts/pagination.html' with page=posts%}
+
+{%endblock%}

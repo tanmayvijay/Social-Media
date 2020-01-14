@@ -10,6 +10,11 @@
 
 
 {%block content%}
+
+{%if request.user == post.author %}
+<a href="{%url 'posts:edit_post' post.pk post.slug %}"> <button>Edit Post</button> </a>
+{%endif%}
+
 <h1>{{post.title}}</h1>
 by <h2> {{post.author}} </h2> on <h2> {{post.publish}} </h2>
 

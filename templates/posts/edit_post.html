@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+
+{%block title%}
+Edit Post
+{%endblock%}
+
+
+
+{%block content%}
+
+<h1>Edit Post</h1>
+<form method='post'>
+	{{edit_post_form.as_p}}
+	{%csrf_token%}
+	<input type="submit" value='Save'>
+</form>
+
+{%endblock%}

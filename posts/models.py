@@ -3,14 +3,13 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from slugify import slugify
 # Create your models here.
 
 
 class PublishedManager(models.Manager):
 	def get_queryset(self):
 		return super(PublishedManager, self).get_queryset().filter(status='published')
-
-
 
 class Post(models.Model):
 	STATUS_CHOICES = (('draft', 'Draft'), ('published', 'Published'),)
@@ -38,3 +37,13 @@ class Post(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('posts:post_detail', args=[self.pk, self.slug])
+
+	@property
+	def publish_post(self):
+		self.status = 'published'
+		self.save()
+		return self.get_absolute_url()
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Post, self).save(*args, **kwargs)

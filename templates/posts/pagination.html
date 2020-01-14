@@ -1,0 +1,10 @@
+{%if page.has_previous%}
+<a href="?page={{page.previous_page_number}}">Prev</a>
+{%endif%}
+
+{{page.number}}
+
+
+{%if page.has_next%}
+<a href="?page={{page.next_page_number}}">Next</a>
+{%endif%}

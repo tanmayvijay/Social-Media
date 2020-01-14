@@ -7,7 +7,6 @@ Draft -- {{new_post.title}}
 
 
 {%block content%}
-{%if new_post.status == 'draft' %}
 <h3>
 	<a href="{{ new_post.publish_post }}"><button class="btn btn-success">Publish</button></a>
 </h3>
@@ -17,7 +16,6 @@ Draft -- {{new_post.title}}
 <p> Date Created {{new_post.created}}</p>
 <p>  {{new_post.}}</p>
 
-{%endif%}
 
 
 {%endblock%}

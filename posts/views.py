@@ -34,8 +34,7 @@ def new_post_view(request):
 			new_post = new_post_form.save(commit=False)
 			new_post.author = request.user
 			new_post.save()
-
-
+			
 			return render(request, 'posts/draft_post.html', {'new_post':new_post})
 
 	else:
@@ -47,6 +46,9 @@ def new_post_view(request):
 
 def edit_post(request, pk, slug):
 	post = get_object_or_404(Post, pk=pk)
+	if not request.user == post.author:
+		return HttpResponseRedirect(reverse_lazy('posts:post_detail', args=[pk, slug]))
+	
 	if request.method =='POST':
 		edit_post_form = EditPostForm(request.POST)
 
@@ -55,7 +57,6 @@ def edit_post(request, pk, slug):
 			post.title = cd['title']
 			post.body = cd['body']
 			post.topics = cd['topics']
-			post.status = 'draft'
 			post.save()
 
 			if post.status == 'draft':
@@ -72,7 +73,7 @@ def edit_post(request, pk, slug):
 
 
 def draft_posts(request):
-	object_list = Post.objects.filter(author=request.user, status='draft')
+	object_list = Post.drafts.filter(author=request.user)
 	paginator = Paginator(object_list, 5)
 	page = request.GET.get('page')
 	try:

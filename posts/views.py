@@ -3,9 +3,16 @@ from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import NewPostForm, EditPostForm
 from django.urls import reverse_lazy
+from taggit.models import Tag
 # Create your views here.
-def posts_home(request):
+def posts_home(request, topic_slug=None):
 	object_list = Post.published.all()
+
+	topic = None
+	if topic_slug:
+		topic = get_object_or_404(Tag, slug=topic_slug)
+		object_list = object_list.filter(topics__in=[topic])
+
 	paginator = Paginator(object_list, 5)
 	page = request.GET.get('page')
 	try:
@@ -15,7 +22,7 @@ def posts_home(request):
 	except EmptyPage:
 		posts = paginator.page(paginator.num_pages)
 
-	return render(request, 'posts/posts_home.html', {'posts':posts, 'page': page})
+	return render(request, 'posts/posts_home.html', {'posts':posts, 'page': page, 'topic':topic})
 
 
 def post_detail(request, pk, slug):
@@ -34,6 +41,12 @@ def new_post_view(request):
 			new_post = new_post_form.save(commit=False)
 			new_post.author = request.user
 			new_post.save()
+			topics = new_post_form.cleaned_data['topics']
+			new_post.topics.add(*topics)
+
+			new_post.save()
+
+
 			
 			return render(request, 'posts/draft_post.html', {'new_post':new_post})
 

@@ -13,6 +13,10 @@ Posts
 
 {%block content_no_jt%}
 
+{%if topic%}
+<h2>by Topic : {{topic.name}}</h2>
+{%endif%}
+
 
 {%for post in posts%}
 
@@ -22,7 +26,15 @@ Posts
 	<h3> by {{post.author}} on {{post.publish}}</h3>
 </p>
 
-<p>Topics: {{post.topics.all|join:", "}}</p>
+<p>Topics:
+	{%for topic in post.topics.all %}
+		<a href="{%url 'posts:posts_by_topic' topic.slug %}">
+			{{topic.name}}
+		</a>
+
+		{%if not forloop.last %}, {%endif%}
+	{%endfor%}
+</p>
 
 {{post.body|markdown|truncatewords_html:10}}
 </div>

@@ -7,6 +7,9 @@ app_name = 'accounts'
 
 urlpatterns = [
 	# path('login', auth_views.LoginView.as_view(), name='login'),
+	path('', views.accounts_home, name='accounts_home'),
+	path('following/', views.following, name='following'),
+	path('followers/', views.followers, name='followers'),
 	path('logout', auth_views.LogoutView.as_view(), name='logout'),
 	path('login', views.login_view, name='login'),
 	path('register/', views.register, name='register'),
@@ -16,6 +19,8 @@ urlpatterns = [
 	path('password_reset/done', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
 	path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(success_url=reverse_lazy('accounts:password_reset_complete')), name='password_reset_confirm'),
 	path('reset/done', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+
+	
 
 	path('<str:username>/', views.profile_view, name='profile'),
 	path('<str:username>/edit', views.edit_profile_view, name='edit_profile'),

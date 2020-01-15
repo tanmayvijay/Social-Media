@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from .models import UserProfile
+# from django.db.models import Q
 # Create your views here.
 def register(request):
 
@@ -127,3 +128,36 @@ def unfollow_view(request, username):
 	return HttpResponseRedirect(reverse_lazy('accounts:profile', kwargs={'username': username}))
 
 
+def accounts_home(request):
+
+	suggested_users = User.objects.exclude(profile__followers__user__username__contains=request.user.username)
+	users = request.user.profile.following.all()
+
+	users = User.objects.filter(profile__following__user__username__contains=request.user.username)
+
+	type_of_users = "Suggested Users"
+	
+
+	
+	return render(request, 'accounts/home.html', {'users': suggested_users, 'type_of_users':type_of_users})
+
+
+
+def followers(request):
+
+	follower_users = User.objects.filter(profile__following__user__username__contains=request.user.username)
+
+	type_of_users = "Followers"
+	
+
+	
+	return render(request, 'accounts/home.html', {'users': follower_users, 'type_of_users':type_of_users})
+
+
+def following(request):
+
+	following_users = request.user.profile.following.all()
+
+	type_of_users = "Following"
+	
+	return render(request, 'accounts/home.html', {'users': following_users, 'type_of_users':type_of_users})

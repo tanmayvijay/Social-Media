@@ -1,0 +1,27 @@
+{%extends 'base.html'%}
+
+
+{%block title%}
+People
+{%endblock%}
+
+
+
+{%block content%}
+
+<h1>{{type_of_users}}</h1>
+
+
+{%for user in users%}
+{%if type_of_users == 'Following' %}
+
+<a href="{%url 'accounts:profile' user.user.username %}"> <h3>{{user.user.username}}</h3> </a>
+{%else%}
+<a href="{%url 'accounts:profile' user.username %}"> <h3>{{user.username}}</h3> </a>
+
+{%endif%}
+
+{%endfor%}
+
+
+{%endblock%}

@@ -127,7 +127,7 @@ USE_TZ = True
 
 
 
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (STATIC_DIR,) # setting up static files dir to its location
 
 

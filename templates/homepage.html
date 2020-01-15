@@ -1,0 +1,47 @@
+{%extends 'base.html'%}
+
+
+{%block title%}
+Social Site on Django by Tanmay Vijay
+{%endblock%}
+
+
+
+{%block content%}
+
+<h1>Social Site on Django by Tanmay Vijay</h1>
+<p>
+	Contact Me On: <a href="mailto:tanmayvijay27@gmail.com">Email</a>
+</p>
+
+<h4>
+	Looking for job in Machine Learning and Web Applications based domain.
+</h4>
+
+{%endblock%}
+
+
+
+{%block content_no_jt%}
+
+{%if not request.user.is_authenticated %}
+
+<div class="jumbotron">
+
+<a href="{%url 'accounts:register'%}">
+	<button class="btn btn-warning">
+	Register
+</button>
+</a>
+
+
+<a href="{%url 'accounts:login'%}">
+<button class="btn btn-success">
+	Login
+</button>
+</a>
+</div>
+
+{%endif%}
+
+{%endblock content_no_jt%}

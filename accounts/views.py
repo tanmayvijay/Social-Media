@@ -46,7 +46,7 @@ def login_view(request):
 				if user.is_active:
 					login(request, user)
 
-					return HttpResponse("Success login!")
+					return HttpResponseRedirect(reverse_lazy('homepage'))
 
 				else:
 					return HttpResponse("Account Terminated!")

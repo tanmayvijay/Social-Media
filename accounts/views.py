@@ -40,7 +40,7 @@ def login_view(request):
 	if request.user.is_authenticated:
 		return HttpResponseRedirect(reverse_lazy('homepage'))
 
-		
+
 	if request.method == 'POST':
 		login_form = LoginForm(data=request.POST)
 
@@ -88,6 +88,9 @@ def profile_view(request, username):
 
 @login_required
 def edit_profile_view(request, username):
+	if not username == request.user.username:
+		return HttpResponseRedirect(reverse_lazy('accounts:profile', args=[username]))
+
 	if request.method == 'POST':
 		edit_form = EditProfileForm(data=request.POST)
 		if edit_form.is_valid():
@@ -113,8 +116,12 @@ def edit_profile_view(request, username):
 
 @login_required
 def follow_view(request, username):
+	if username == request.user.username:
+		return HttpResponseRedirect(reverse_lazy('accounts:profile', args=[username]))
+
+
 	user_to_follow = get_object_or_404(User, username=username)
-	current_user = request.user
+	current_user = request.user	
 
 	current_user.profile.following.add(user_to_follow.profile)
 
@@ -126,6 +133,10 @@ def follow_view(request, username):
 
 @login_required
 def unfollow_view(request, username):
+	if username == request.user.username:
+		return HttpResponseRedirect(reverse_lazy('accounts:profile', args=[username]))
+
+		
 	user_to_unfollow = get_object_or_404(User, username=username)
 	current_user = request.user
 

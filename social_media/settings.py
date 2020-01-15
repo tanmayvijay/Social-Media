@@ -15,7 +15,10 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# setting template dir in project folder
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+
+# setting static files directory in project folder
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
@@ -39,9 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts.apps.AccountsConfig',
-    'posts.apps.PostsConfig',
-    'taggit',
+    'accounts.apps.AccountsConfig', # accounts app config
+    'posts.apps.PostsConfig', # posts app config
+    'taggit', # pip install django_taggit
 ]
 
 MIDDLEWARE = [
@@ -59,7 +62,7 @@ ROOT_URLCONF = 'social_media.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR,],
+        'DIRS': [TEMPLATE_DIR,], # including the dir for templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,16 +125,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (STATIC_DIR,)
+
+
+# STATIC_URL = '/static/'
+STATICFILES_DIRS = (STATIC_DIR,) # setting up static files dir to its location
 
 
 
+
+# url for login
 LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = 'homepage'
+LOGIN_REDIRECT_URL = 'homepage' # url after successful login
 
+
+# url for logout
 LOGOUT_URL = 'accounts:logout'
-LOGOUT_REDIRECT_URL = 'homepage'
+LOGOUT_REDIRECT_URL = 'homepage' # url after successful login
 
 
+
+# setting up email backend to local server
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

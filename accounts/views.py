@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from .models import UserProfile
+from django.contrib.auth.decorators import login_required
 # from django.db.models import Q
 # Create your views here.
 def register(request):
@@ -45,6 +46,10 @@ def login_view(request):
 			if user is not None:
 				if user.is_active:
 					login(request, user)
+					next_page = request.GET.get('next')
+
+					if next_page:
+						return HttpResponseRedirect(next_page)
 
 					return HttpResponseRedirect(reverse_lazy('homepage'))
 
@@ -60,7 +65,7 @@ def login_view(request):
 
 	return render(request, 'accounts/login.html', context={'login_form': login_form})
 
-
+@login_required
 def profile_view(request, username):
 
 	user = get_object_or_404(User, username=username)
@@ -75,7 +80,7 @@ def profile_view(request, username):
 	return render(request, 'accounts/profile_page.html', {'user': user, 'follow': follow})
 
 
-
+@login_required
 def edit_profile_view(request, username):
 	if request.method == 'POST':
 		edit_form = EditProfileForm(data=request.POST)
@@ -100,7 +105,7 @@ def edit_profile_view(request, username):
 	return render(request, 'accounts/edit_profile.html', {'edit_form':edit_form})
 	
 
-
+@login_required
 def follow_view(request, username):
 	user_to_follow = get_object_or_404(User, username=username)
 	current_user = request.user
@@ -113,7 +118,7 @@ def follow_view(request, username):
 
 
 
-
+@login_required
 def unfollow_view(request, username):
 	user_to_unfollow = get_object_or_404(User, username=username)
 	current_user = request.user
@@ -127,7 +132,7 @@ def unfollow_view(request, username):
 
 	return HttpResponseRedirect(reverse_lazy('accounts:profile', kwargs={'username': username}))
 
-
+@login_required
 def accounts_home(request):
 
 	suggested_users = User.objects.exclude(profile__followers__user__username__contains=request.user.username)
@@ -142,7 +147,7 @@ def accounts_home(request):
 	return render(request, 'accounts/home.html', {'users': suggested_users, 'type_of_users':type_of_users})
 
 
-
+@login_required
 def followers(request):
 
 	follower_users = User.objects.filter(profile__following__user__username__contains=request.user.username)
@@ -153,7 +158,7 @@ def followers(request):
 	
 	return render(request, 'accounts/home.html', {'users': follower_users, 'type_of_users':type_of_users})
 
-
+@login_required
 def following(request):
 
 	following_users = request.user.profile.following.all()

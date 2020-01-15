@@ -4,7 +4,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import NewPostForm, EditPostForm
 from django.urls import reverse_lazy
 from taggit.models import Tag
+from django.contrib.auth.decorators import login_required
 # Create your views here.
+
 def posts_home(request, topic_slug=None):
 	object_list = Post.published.all()
 
@@ -25,6 +27,7 @@ def posts_home(request, topic_slug=None):
 	return render(request, 'posts/posts_home.html', {'posts':posts, 'page': page, 'topic':topic})
 
 
+@login_required
 def post_detail(request, pk, slug):
 	post = get_object_or_404(Post, pk=pk)
 
@@ -32,7 +35,7 @@ def post_detail(request, pk, slug):
 
 
 
-
+@login_required
 def new_post_view(request):
 	if request.method =='POST':
 		new_post_form = NewPostForm(request.POST)
@@ -56,7 +59,7 @@ def new_post_view(request):
 	return render(request, 'posts/new_post.html', {'new_post_form':new_post_form})
 
 
-
+@login_required
 def edit_post(request, pk, slug):
 	post = get_object_or_404(Post, pk=pk)
 	if not request.user == post.author:
@@ -85,6 +88,7 @@ def edit_post(request, pk, slug):
 	return render(request, 'posts/edit_post.html', {'edit_post_form':edit_post_form})
 
 
+@login_required
 def draft_posts(request):
 	object_list = Post.drafts.filter(author=request.user)
 	paginator = Paginator(object_list, 5)

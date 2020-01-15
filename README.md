@@ -15,18 +15,16 @@ This is social media site I built from scratch using Django Backend Framework, H
 * Using *django_taggit*.
 * Creating Accounts applications.
 * **Handling duplicate username during signup**.  
-* **Handling duplicate emails during signup**.<b>
-  
+* **Handling duplicate emails during signup**. 
 * **Authenticating and Authorizing user actions**.
 * **Making login compulsary for certain actions**.
 * Creating user following and followers system.  
 * **Suggesting users to follow from unfollowed users**.
-* Preventing users from following/unfollowing themselves.<b>
-  
+* Preventing users from following/unfollowing themselves.
 * **Creating system for draft posts**.
 * Allowing users to publish posts only when they want it.
 * **Allowing users to edit their posts**.
-* **Preventing users from editing other users' posts**.<b>
+* **Preventing users from editing other users' posts**.
 
 
 ### How to Use

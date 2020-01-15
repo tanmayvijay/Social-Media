@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 # from django.db.models import Q
 # Create your views here.
 def register(request):
+	if request.user.is_authenticated:
+		return HttpResponseRedirect(reverse_lazy('homepage'))
 
 	if request.method == 'POST':
 		user_form = UserRegistrationForm(data=request.POST)
@@ -35,6 +37,10 @@ def register(request):
 
 
 def login_view(request):
+	if request.user.is_authenticated:
+		return HttpResponseRedirect(reverse_lazy('homepage'))
+
+		
 	if request.method == 'POST':
 		login_form = LoginForm(data=request.POST)
 

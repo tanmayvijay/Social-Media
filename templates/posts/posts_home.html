@@ -17,7 +17,7 @@ Posts
 <h2>by Topic : {{topic.name}}</h2>
 {%endif%}
 
-
+{%if posts%}
 {%for post in posts%}
 
 <div class="jumbotron">
@@ -43,6 +43,12 @@ Posts
 
 
 {%include 'posts/pagination.html' with page=posts%}
-
+{%else%}
+<p>
+	<h3>
+		No Posts to show!
+	</h3>
+</p>
+{%endif%}
 
 {%endblock%}

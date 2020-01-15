@@ -1,12 +1,16 @@
+# imports
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from .models import Post
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import NewPostForm, EditPostForm
 from django.urls import reverse_lazy
 from taggit.models import Tag
 from django.contrib.auth.decorators import login_required
+from .forms import NewPostForm, EditPostForm
+from .models import Post
+
 # Create your views here.
 
+
+# view to see all published posts
 def posts_home(request, topic_slug=None):
 	object_list = Post.published.all()
 
@@ -27,6 +31,8 @@ def posts_home(request, topic_slug=None):
 	return render(request, 'posts/posts_home.html', {'posts':posts, 'page': page, 'topic':topic})
 
 
+
+# view to see a particular post
 @login_required
 def post_detail(request, pk, slug):
 	post = get_object_or_404(Post, pk=pk)
@@ -35,6 +41,7 @@ def post_detail(request, pk, slug):
 
 
 
+# view to create a new post
 @login_required
 def new_post_view(request):
 	if request.method =='POST':
@@ -59,6 +66,8 @@ def new_post_view(request):
 	return render(request, 'posts/new_post.html', {'new_post_form':new_post_form})
 
 
+
+# view to edit a self post
 @login_required
 def edit_post(request, pk, slug):
 	post = get_object_or_404(Post, pk=pk)
@@ -88,6 +97,9 @@ def edit_post(request, pk, slug):
 	return render(request, 'posts/edit_post.html', {'edit_post_form':edit_post_form})
 
 
+
+
+# view to see all self draft posts
 @login_required
 def draft_posts(request):
 	object_list = Post.drafts.filter(author=request.user)
@@ -104,6 +116,8 @@ def draft_posts(request):
 
 
 
+
+# view to see all topics
 def topics_view(request):
 	topics = Tag.objects.all()
 	return render(request, 'posts/topics_page.html', {'topics': topics})

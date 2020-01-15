@@ -97,3 +97,9 @@ def draft_posts(request):
 		posts = paginator.page(paginator.num_pages)
 
 	return render(request, 'posts/draft_posts.html', {'posts':posts, 'page': page})
+
+
+
+def topics_view(request):
+	topics = Tag.objects.all()
+	return render(request, 'posts/topics_page.html', {'topics': topics})

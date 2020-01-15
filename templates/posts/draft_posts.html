@@ -8,7 +8,7 @@
 
 
 {%block content%}
-
+{%if posts%}
 {%for post in posts%}
 
 <div class="jumbotron">
@@ -24,7 +24,14 @@
 
 {%endfor%}
 
+
+
+
 Page:
 {%include 'posts/pagination.html' with page=posts%}
+
+{%else%}
+<h3>No Draft Posts for You!</h3>
+{%endif%}
 
 {%endblock%}

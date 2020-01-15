@@ -1,0 +1,28 @@
+{%extends 'base.html'%}
+
+
+{%block title%}
+Topics
+{%endblock%}
+
+
+
+{%block content%}
+<h1>Topics:</h1>
+
+
+{%if topics%}
+{%for topic in topics%}
+
+<p>
+	<a href="{%url 'posts:posts_by_topic' topic.slug %}">
+		<h3>
+			{{topic.name|title}}
+		</h3>
+	</a>
+</p>
+
+
+{%endfor%}
+{%endif%}
+{%endblock%}

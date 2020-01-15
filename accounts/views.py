@@ -1,16 +1,22 @@
+# imports
 from django.shortcuts import render, HttpResponse, get_object_or_404, HttpResponseRedirect
-from .forms import UserRegistrationForm, UserProfileForm, LoginForm, EditProfileForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
-from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+from .forms import UserRegistrationForm, UserProfileForm, LoginForm, EditProfileForm
+from .models import UserProfile
 # from django.db.models import Q
+
 # Create your views here.
+
+# new user registration view
 def register(request):
+	# logout required for registration
 	if request.user.is_authenticated:
 		return HttpResponseRedirect(reverse_lazy('homepage'))
 
+	# if form filled
 	if request.method == 'POST':
 		user_form = UserRegistrationForm(data=request.POST)
 		profile_form = UserProfileForm(data=request.POST)
@@ -28,6 +34,7 @@ def register(request):
 			# login
 
 			return HttpResponse("Success refister!")
+	# if new form to be rendered
 	else:
 		user_form = UserRegistrationForm()
 		profile_form = UserProfileForm()
@@ -36,11 +43,14 @@ def register(request):
 	return render(request, 'accounts/register.html', context={'user_form':user_form, 'profile_form': profile_form})
 
 
+
+# login view
 def login_view(request):
+	# logout required for login
 	if request.user.is_authenticated:
 		return HttpResponseRedirect(reverse_lazy('homepage'))
 
-
+	# if form filled
 	if request.method == 'POST':
 		login_form = LoginForm(data=request.POST)
 
@@ -65,17 +75,21 @@ def login_view(request):
 			else:
 				return HttpResponse("User Doesnt exist!")
 
+	# if new form is to be rendered
 	else:
 		login_form = LoginForm()
 
 
 	return render(request, 'accounts/login.html', context={'login_form': login_form})
 
+
+# view someone's profile
 @login_required
 def profile_view(request, username):
 
 	user = get_object_or_404(User, username=username)
 
+	# check if the current user follows this user
 	follow = False
 	try:
 		if request.user.profile.following.get(user=user):
@@ -86,11 +100,15 @@ def profile_view(request, username):
 	return render(request, 'accounts/profile_page.html', {'user': user, 'follow': follow})
 
 
+
+# view to edit self profile
 @login_required
 def edit_profile_view(request, username):
+	# to handle attempts to edit someone else's profile
 	if not username == request.user.username:
 		return HttpResponseRedirect(reverse_lazy('accounts:profile', args=[username]))
 
+	# if form already filled
 	if request.method == 'POST':
 		edit_form = EditProfileForm(data=request.POST)
 		if edit_form.is_valid():
@@ -107,15 +125,18 @@ def edit_profile_view(request, username):
 			user.save()
 
 			return HttpResponseRedirect(reverse_lazy('accounts:profile', kwargs={'username': user.username}))
-
+	# if form not already filled
 	else:
 		edit_form = EditProfileForm()
 
 	return render(request, 'accounts/edit_profile.html', {'edit_form':edit_form})
 	
 
+
+# view to follow someone
 @login_required
 def follow_view(request, username):
+	# to prevent following self
 	if username == request.user.username:
 		return HttpResponseRedirect(reverse_lazy('accounts:profile', args=[username]))
 
@@ -131,8 +152,10 @@ def follow_view(request, username):
 
 
 
+# view to unfollow someone
 @login_required
 def unfollow_view(request, username):
+	# to prevent unfollowing self
 	if username == request.user.username:
 		return HttpResponseRedirect(reverse_lazy('accounts:profile', args=[username]))
 
@@ -149,6 +172,10 @@ def unfollow_view(request, username):
 
 	return HttpResponseRedirect(reverse_lazy('accounts:profile', kwargs={'username': username}))
 
+
+
+
+# showing suggested people to follow
 @login_required
 def accounts_home(request):
 
@@ -164,6 +191,9 @@ def accounts_home(request):
 	return render(request, 'accounts/home.html', {'users': suggested_users, 'type_of_users':type_of_users})
 
 
+
+
+# showing followers
 @login_required
 def followers(request):
 
@@ -175,6 +205,11 @@ def followers(request):
 	
 	return render(request, 'accounts/home.html', {'users': follower_users, 'type_of_users':type_of_users})
 
+
+
+
+
+# showing followed people
 @login_required
 def following(request):
 
